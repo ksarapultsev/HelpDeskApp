@@ -1,0 +1,27 @@
+﻿@page "/"
+@inject IRepository _db; 
+
+<div class="row">
+    <div class="col text-center">
+        <h1 class="text-primary">Центр поддержки "любимых" клиентов</h1>
+    </div>
+</div> 
+
+<div class="d-flex justify-content-start flex-wrap">
+    @foreach (var item in testCards)
+    {
+        <div>
+            <Card CardInfo="item" />
+        </div>
+    }
+</div>
+
+@code{
+    List<CardModel> testCards;
+
+    protected override void OnInitialized()
+    {
+        testCards = _db.GetAllCases();
+    }
+}
+

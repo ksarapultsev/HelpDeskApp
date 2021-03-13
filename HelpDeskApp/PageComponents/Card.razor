@@ -1,0 +1,23 @@
+﻿<div class="sticker">
+    <div class="sticker-container">
+        <h3>@CardInfo.Subject</h3>
+        <h6>Номер обращения: ID</h6>
+    </div>
+    <img src="#" alt="Image" class="sticker-image" />
+    <div class="sticker-container" style="background-color: white">
+        <p>@CardInfo.Message</p>
+    </div>
+    <div class="sticker-container">
+        <div>Запрос от: <span class="request-company">@CardInfo.CompanyName</span></div>
+        <div>Дата запроса: @CardInfo.CreationDay.ToShortDateString()</div>
+    </div>
+    <div class="sticker-container d-flex justify-content-center flex-wrap sticker-buttons btn-group">
+        <button type="button" class="btn btn-outline-success">Решено</button>
+        <button type="button" class="btn btn-outline-info">Информация</button>
+        <button type="button" class="btn btn-outline-dark">Ложная</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public CardModel CardInfo { get; set; }
+}
