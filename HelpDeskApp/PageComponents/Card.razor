@@ -1,23 +1,68 @@
-﻿<div class="sticker">
-    <div class="sticker-container">
-        <h3>@CardInfo.Subject</h3>
-        <h6>Номер обращения: ID</h6>
+﻿<div class="sticker" style="@cardStyle.BorderColorStyle">
+    <div class="sticker-container @cardStyle.HeaderColorClass">
+        <h3 class="text-uppercase">@CardInfo.Subject</h3>
+        <h6 class="text-uppercase">Номер обращения: @CardInfo.Id</h6>
     </div>
-    <img src="#" alt="Image" class="sticker-image" />
+    <img src="@cardStyle.ImagePath" alt="Image" class="sticker-image" />
     <div class="sticker-container" style="background-color: white">
-        <p>@CardInfo.Message</p>
+        <p>@CardInfo.ShortMessage</p>
     </div>
-    <div class="sticker-container">
+    <div class="sticker-container @cardStyle.HeaderColorClass">
         <div>Запрос от: <span class="request-company">@CardInfo.CompanyName</span></div>
         <div>Дата запроса: @CardInfo.CreationDay.ToShortDateString()</div>
     </div>
-    <div class="sticker-container d-flex justify-content-center flex-wrap sticker-buttons btn-group">
+    <div class="sticker-container d-flex justify-content-center flex-wrap sticker-buttons btn-group" style="@cardStyle.BgButtonStyle">
         <button type="button" class="btn btn-outline-success">Решено</button>
         <button type="button" class="btn btn-outline-info">Информация</button>
         <button type="button" class="btn btn-outline-dark">Ложная</button>
     </div>
+   @* <ModalInformation CardInfo="CardInfo" />*@
 </div>
 
 @code {
     [Parameter] public CardModel CardInfo { get; set; }
+
+    CardStyleModel cardStyle = new();
+
+    protected override void OnInitialized()
+    {
+        setStickerStyles(CardInfo.Alarm);
+    }
+
+    void setStickerStyles(AlarmLevel alarm)
+    {
+        switch (alarm)
+        {
+            case AlarmLevel.None:
+                cardStyle.HeaderColorClass = " alert-secondary ";
+                cardStyle.BorderColorStyle = "border: 5px groove #d6d8db; ";
+                cardStyle.ImagePath = "../Images/Default.png";
+                cardStyle.BgButtonStyle = "background-color: #e2e3e5;";
+                break;
+            case AlarmLevel.Low:
+                cardStyle.HeaderColorClass = " alert-info ";
+                cardStyle.BorderColorStyle = "border: 5px groove #d6d8db; ";
+                cardStyle.ImagePath = "../Images/Attention.png";
+                cardStyle.BgButtonStyle = "background-color: #d1ecf1;";
+                break;
+            case AlarmLevel.Medium:
+                cardStyle.HeaderColorClass = " alert-warning ";
+                cardStyle.BorderColorStyle = "border: 5px groove #ffeeba; ";
+                cardStyle.ImagePath = "../Images/Warning.png";
+                cardStyle.BgButtonStyle = "background-color: #fff3cd;";
+                break;
+            case AlarmLevel.High:
+                cardStyle.HeaderColorClass = " alert-danger ";
+                cardStyle.BorderColorStyle = "border: 5px groove #f5c8cd; ";
+                cardStyle.ImagePath = "../Images/Danger.png";
+                cardStyle.BgButtonStyle = "background-color: #f8d7da;";
+                break;
+            default:
+                cardStyle.HeaderColorClass = " alert-secondary ";
+                cardStyle.BorderColorStyle = "border: 5px groove #d6d8db; ";
+                cardStyle.ImagePath = "../Images/Default.png";
+                cardStyle.BgButtonStyle = "background-color: #e2e3e5;";
+                break;
+        }
+    }
 }

@@ -17,5 +17,16 @@ namespace HelpDeskApp.Data
 
         public AlarmLevel Alarm { get; set; }
         public State CurrentState { get; set; }
+
+        public string ShortMessage
+        {
+            get {
+                if (Message.Length > 40)
+                    return Message.Substring(0, 37) + "...";
+                else
+                    return Message + "...";
+            }
+        }
+        public String SpecialistMessage { get; set; }
     }
 }

@@ -1,7 +1,8 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Caveat',cursive;
 }
 
 a, .btn-link {
@@ -57,5 +58,26 @@ a, .btn-link {
         text-align: center;
     }
    .sticker-container {
+       padding: 5px 10px;
+       text-align: center;
 
    }
+
+.sticker-image {
+    width: 200px;
+    height: 200px;
+    padding: 5px 2px;
+}
+
+.request-company {
+    background: #f1f1f1;
+    padding: 3px;
+}
+
+.sticker-buttons {
+    padding: 10px;
+}
+
+p {
+    font-size: 25px;
+}
