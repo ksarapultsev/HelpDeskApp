@@ -1,22 +1,25 @@
-﻿<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+﻿@if (showModal)
+{
+<div class="modal fade show " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
      aria-hidden="true" style="display: block">
    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
-       <div class="modal-content">
-           <div class="modal-header">
+       <div class="modal-content modal-box-shadow">
+           <div class="modal-header @Styles.HeaderColorClass">
                <h5 class="modal-title">@CardInfo.Subject</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <button type="button" @onclick="CloseButtonHandler" class="close" data-dismiss="modal" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                </button>
            </div>
            <div class="modal-body">
                <div class="row">
                    <div class="col">
+                       <img src="@Styles.ImagePath" alt="Image" height="100" />
                        <h4 class="text-info text-center">Номер обращения: @CardInfo.Id</h4>
                        <hr />
                    </div>
                </div>
                <div class="row">
-                   <div class="col alert m-3 rounded bg-warning ">
+                   <div class="col alert m-3 rounded @Styles.HeaderColorClass ">
                        <p class="text-center">
                            <span class="text-dark">Описание проблемы:</span> <br />
                            @CardInfo.Message
@@ -66,18 +69,30 @@
                            <InputTextArea @bind-Value="@CardInfo.SpecialistMessage" class="form-control"></InputTextArea>
                        </div>
                    </div>
-
-                   
-
                </EditForm>
+           </div>
+           <div class="modal-footer" style="@Styles.BgButtonStyle">
+               <button type="button" @onclick="CloseButtonHandler" data-dismiss="modal" class="btn btn-secondary">Закрыть</button>
+               <button type="button" @onclick="SaveChanges" class="btn btn-primary">Сохранить изменения</button>
            </div>
        </div>
    </div>
 </div>
+}
 
 @code {
     [Parameter] public CardModel CardInfo { get; set; }
 
-    
+    [Parameter] public CardStyleModel Styles { get; set; }
+
+
+    [Parameter] public EventCallback CloseButtonHandler { get; set; }
+
+    [Parameter] public EventCallback SaveChanges { get; set; }
+
+    bool showModal = false;
+
+    public void Show() => showModal = true;
+    public void Hide() => showModal = false;
 
 }

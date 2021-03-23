@@ -60,5 +60,11 @@ namespace HelpDeskApp.Data.Repository
         {
             return _cases;
         }
+
+        public void SaveModelChanges(CardModel _modelToSave)
+        {
+           var elementIndex = _cases.FindIndex(x => x.Id.Equals(_modelToSave.Id));
+            _cases[elementIndex] = _modelToSave;
+        }
     }
 }

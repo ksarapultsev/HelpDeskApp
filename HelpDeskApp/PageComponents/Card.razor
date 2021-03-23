@@ -1,4 +1,6 @@
-﻿<div class="sticker" style="@cardStyle.BorderColorStyle">
+﻿@inject IRepository _db
+
+<div class="sticker" style="@cardStyle.BorderColorStyle">
     <div class="sticker-container @cardStyle.HeaderColorClass">
         <h3 class="text-uppercase">@CardInfo.Subject</h3>
         <h6 class="text-uppercase">Номер обращения: @CardInfo.Id</h6>
@@ -10,19 +12,22 @@
     <div class="sticker-container @cardStyle.HeaderColorClass">
         <div>Запрос от: <span class="request-company">@CardInfo.CompanyName</span></div>
         <div>Дата запроса: @CardInfo.CreationDay.ToShortDateString()</div>
+        <div>Статус запроса: @CardInfo.CurrentState</div>
     </div>
     <div class="sticker-container d-flex justify-content-center flex-wrap sticker-buttons btn-group" style="@cardStyle.BgButtonStyle">
-        <button type="button" class="btn btn-outline-success">Решено</button>
-        <button type="button" class="btn btn-outline-info">Информация</button>
-        <button type="button" class="btn btn-outline-dark">Ложная</button>
+        <button type="button" @onclick="(() =>ResovedFalseButtonHandler(State.Resolved))" class="btn btn-outline-success">Решено</button>
+        <button type="button" @onclick="OpenModal" class="btn btn-outline-info">Информация</button>
+        <button type="button" @onclick="(() =>ResovedFalseButtonHandler(State.Closed))" class="btn btn-outline-dark">Ложная</button>
     </div>    
-    <ModalInformation CardInfo="CardInfo" />
+    <ModalInformation @ref="modal" CardInfo="CardInfo" Styles="cardStyle" SaveChanges="SaveChanges" CloseButtonHandler="CloseModal"/>
 </div>
 
 @code {
     [Parameter] public CardModel CardInfo { get; set; }
 
     CardStyleModel cardStyle = new();
+
+    ModalInformation modal;
 
     protected override void OnInitialized()
     {
@@ -64,5 +69,27 @@
                 cardStyle.BgButtonStyle = "background-color: #e2e3e5;";
                 break;
         }
+    }
+
+    void CloseModal()
+    {
+        modal.Hide();
+    }
+
+    void OpenModal()
+    {
+        modal.Show();
+    }
+
+    void SaveChanges()
+    {
+        setStickerStyles(CardInfo.Alarm);
+        _db.SaveModelChanges(CardInfo);
+    }
+
+    void ResovedFalseButtonHandler(State state)
+    {
+        CardInfo.CurrentState = state;
+        _db.SaveModelChanges(CardInfo);
     }
 }
